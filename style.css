@@ -1,0 +1,186 @@
+* {
+  color: white;
+}
+body {
+  background-color: #222;
+  text-align: center;
+  font-size: 16px;
+}
+
+h1 {
+  font-family: "Press Start 2P", cursive;
+  color: white;
+}
+
+table {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 20px;
+  border-collapse: collapse;
+}
+
+td {
+  box-shadow: 0 0 10px purple;
+  border: 1px solid black;
+  vertical-align: middle;
+  border-radius: 20%;
+  width: 75px;
+  height: 75px;
+  font-size: 30px;
+}
+
+.result1 {
+  background-color: #198754;
+}
+
+.result2 {
+  background-color: #FFC107;
+}
+
+.result3 {
+  background-color: #DC3545;
+}
+
+#attempts {
+  justify-items: center;
+}
+
+#controls {
+  box-shadow: 0 0 10px purple;
+  background-color: #222;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 0px;
+  justify-items: center;
+  margin: 5%;
+  padding: 3%;
+}
+
+#options {
+  box-shadow: 0 0 10px purple;
+  background-color: #222;
+  margin: 5%;
+  padding: 3%;
+}
+
+#board {
+  display: flex;
+  justify-content: center;
+  margin: 5%;
+}
+
+.container {
+  border-radius: 1%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  box-shadow: 0 0 10px purple;
+  background-image: url("wallpaper.jpg");
+  background-size: cover;
+  background-position: center;
+  background-blend-mode: overlay;
+}
+
+input {
+  width: 48px;
+  border-radius: 20%;
+  text-align: center;
+}
+
+fieldset {
+  font-size: 16px;
+}
+
+#reset-button {
+  background-color: #595959;
+  width: 130px;
+  height: 38px;
+  border: 1px solid black;
+  border-radius: 5%;
+  font-size: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 10px cyan;
+  margin-top: 20%;
+  transition: all 0.3s ease-in-out;
+}
+
+#reset-button:hover {
+  background-color: cyan;
+  color: black;
+  box-shadow: 0 0 10px black;
+}
+
+.number-button {
+  background-color: #595959;
+  width: 75px;
+  height: 75px;
+  border: 1px solid white;
+  border-radius: 50%;
+  font-size: 30px;
+  cursor: pointer;
+  box-shadow: 0 0 10px purple;
+  transition: all 0.3s ease-in-out;
+}
+
+.number-button:hover {
+  background-color: #777;
+  color: white;
+  box-shadow: 0 0 10px cyan;
+}
+
+#submit-button {
+  background-color: #5cb85c;
+  width: 75px;
+  height: 75px;
+  border: 1px solid white;
+  border-radius: 20%;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 10px green;
+  transition: all 0.3s ease-in-out;
+}
+
+#submit-button:hover:enabled {
+  background-color: #2fac2f;
+  color: white;
+  box-shadow: 0 0 10px green;
+}
+
+#submit-button:disabled {
+  background-color: transparent;
+  width: 75px;
+  height: 75px;
+  border: 1px solid white;
+  border-radius: 20%;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 10px green;
+  transition: all 0.3s ease-in-out;
+}
+#delete-button {
+  background-color: #595959;
+  width: 75px;
+  height: 75px;
+  border: 1px solid white;
+  border-radius: 20%;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 0 10px red;
+  transition: all 0.3s ease-in-out;
+}
+
+#delete-button:hover {
+  background-color: #d9534f;
+  color: white;
+  box-shadow: 0 0 10px cyan;
+}
+
+footer {
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
