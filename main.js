@@ -1,24 +1,23 @@
 let intentos = 6;
 let claveSecreta = [];
 let filaActual = [];
+let gameWon = false;
 
 // Funcionamiento del juego
 generateSecretCode();
-document.getElementById("attempts").innerHTML = "Intentos: " + intentos;
+document.getElementById("attempts").innerHTML = `Intentos: ${intentos}`;
 createTable();
-let buttons = document.querySelectorAll("#buttons button");
-addNumberButtonListeners();
-document.getElementById("submit-button").addEventListener("click", checkGuess);
-document.getElementById("delete-button").addEventListener("click", deleteNumber);
+addEventListeners();
 
 // Función que te devuelva un array con la clave secreta sin que se repitan los numeros y que sean cinco cifras
 function generateSecretCode() {
-  while (claveSecreta.length < 5) {
+  claveSecreta = [];
+  do {
     let digit = Math.floor(Math.random() * 10);
     if (!claveSecreta.includes(digit)) {
       claveSecreta.push(digit);
     }
-  }
+  } while (claveSecreta.length < 5);
   return claveSecreta;
 }
 
@@ -54,6 +53,9 @@ function createTable() {
 
 // Función que se dedica a añadir los numeros a la fila actual
 function enterNumber() {
+  if (gameWon) {
+    return;
+  }
   let number = this.innerHTML;
   if (filaActual.length < 5) {
     filaActual.push(number);
@@ -88,28 +90,33 @@ function checkGuess() {
       result.push(3);
     }
   }
+  if (result.every((value) => value === 1)) {
+    gameWon = true;
+  }
+  filaActual = [];
+  return result;
+}
+
+// Función que se dedica a actualizar la interfaz de usuario después de cada intento
+function updateUIAfterGuess(result) {
   const currentRow = document.querySelector(`.fila${6 - intentos}`);
   const cells = currentRow.querySelectorAll("td");
-for (const [index, element] of cells.entries()) {
+  for (const [index, element] of cells.entries()) {
     element.classList.add(`result${result[index]}`);
-}
-if (result.every((value) => value == 1)) {
+  }
+  intentos--;
+  if (gameWon) {
     document.getElementById("message").innerHTML = `<br>¡Has ganado!<br><br>La clave secreta era: ${claveSecreta.join("")}`;
-    document.getElementById("submit-button").disabled = true;
-} else if (intentos == 1) {
+  } else if (intentos == 0) {
     document.getElementById("message").innerHTML = `<br>¡Has perdido!<br><br>La clave secreta era: ${claveSecreta.join("")}`;
+  }
+  if (gameWon || intentos == 0) {
     document.getElementById("submit-button").disabled = true;
-}
-intentos--;
-filaActual = [];
-if (intentos == 0) {
-    document.getElementById("submit-button").disabled = true;
-} else {
+  } else {
     document.getElementById("submit-button").classList.add("disabled");
     document.getElementById("submit-button").disabled = true;
-}
-document.getElementById("attempts").innerHTML = `Intentos: ${intentos}`;
-document.getElementById("submit-button").disabled = true;
+  }
+  document.getElementById("attempts").innerHTML = `Intentos: ${intentos}`;
 }
 
 // Función que se dedica a resetear el juego
@@ -119,10 +126,9 @@ function resetGame() {
     intentos = 6;
     claveSecreta = generateSecretCode();
     filaActual = [];
+    gameWon = false;
     const table = document.getElementById("maintable");
-    while (table.firstChild) {
-      table.removeChild(table.firstChild);
-    }
+    table.innerHTML = '';
     createTable();
     const submitButton = document.getElementById("submit-button");
     submitButton.classList.add("disabled");
@@ -132,38 +138,43 @@ function resetGame() {
   }
 }
 
-// Añadimos los listeners a los botones
+// Añadimos todos los event listeners
+function addEventListeners() {
+  addNumberButtonListeners();
+  addResetButtonListener();
+  addKeyboardListeners();
+  document.getElementById("submit-button").addEventListener("click", function() {
+    const result = checkGuess();
+    updateUIAfterGuess(result);
+  });
+  document.getElementById("delete-button").addEventListener("click", deleteNumber);
+}
+
+// Añadimos los listeners a los botones numericos
 function addNumberButtonListeners() {
   const buttons = document.querySelectorAll(".number-button");
   for (const button of buttons) {
     button.addEventListener("click", enterNumber);
   }
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key >= "0" && event.key <= "9") {
-      enterNumber.call({ innerHTML: event.key });
-    }
-  });
-  document.getElementById("delete-button").addEventListener("click", deleteNumber);
-  document.getElementById("submit-button").addEventListener("click", checkGuess);
-  document.getElementById("reset-button").addEventListener("click", resetGame);
-}
-
-let numberButtons = document.getElementsByClassName("number-button");
-for (let button of numberButtons) {
-  button.addEventListener("click", enterNumber);
 }
 
 // Añadimos el listener al boton de reset
-const resetButton = document.getElementById("reset-button");
-resetButton.addEventListener("click", resetGame);
+function addResetButtonListener() {
+  const resetButton = document.getElementById("reset-button");
+  resetButton.addEventListener("click", resetGame);
+}
 
-// Añadimos los listeners a las teclas
-document.addEventListener("keydown", (event) => {
-  const key = event.key;
-  if (key === "Backspace") {
-    deleteNumber();
-  } else if (key === "Enter" && !document.getElementById("submit-button").disabled) {
-    checkGuess();
-  }
-});
+// Añadimos los listeners al teclado
+function addKeyboardListeners() {
+  document.addEventListener("keydown", (event) => {
+    const key = event.key;
+    if (key === "Backspace") {
+      deleteNumber();
+    } else if (key === "Enter" && !document.getElementById("submit-button").disabled) {
+      const result = checkGuess();
+      updateUIAfterGuess(result);
+    } else if (key >= "0" && key <= "9") {
+      enterNumber.call({ innerHTML: key });
+    }
+  });
+}
